@@ -6,21 +6,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL_MONGO")
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String?
   published Boolean @default(false)
   author    User?   @relation(fields: [authorId], references: [id])
-  authorId Int?
+  authorId String? @db.ObjectId
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
+  id    String    @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
   name  String
   posts Post[]
